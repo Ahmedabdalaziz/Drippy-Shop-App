@@ -21,6 +21,7 @@ class SignupCubit extends Cubit<SignupState> {
     required String phone,
     required String password,
   }) async {
+
     emit(SignupLoading());
 
     String? errorMessage;

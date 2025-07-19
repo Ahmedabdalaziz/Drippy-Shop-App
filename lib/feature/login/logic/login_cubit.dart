@@ -12,6 +12,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit(this._loginRepository) : super(LoginInitial());
 
+  // login user
   Future<void> loginUser(String email, String password) async {
     emit(LoginLoading());
 
@@ -34,6 +35,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
+  // logout user
   Future<void> logoutUser() async {
     emit(LoginLoading());
     try {

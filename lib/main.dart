@@ -2,7 +2,6 @@ import 'package:drippydrop_app/core/DI/dependancy_injection.dart'
     show setUpGetIt;
 import 'package:drippydrop_app/core/helper/constants.dart';
 import 'package:drippydrop_app/drippy_drop_app.dart';
-import 'package:drippydrop_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
@@ -20,6 +19,8 @@ Future<void> main() async {
     url: Constants.supabaseUrl,
     anonKey: Constants.supabaseKey,
   );
+
+  await Firebase.initializeApp();
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
-    id("com.google.gms.google-services") // ✅ مفيش version هنا
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -39,9 +39,7 @@ flutter {
 }
 
 dependencies {
-    // Firebase BoM (Bill of Materials) لإدارة الإصدارات
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
 
-    // Firebase Analytics (أو أي Firebase SDK تاني تحبه)
     implementation("com.google.firebase:firebase-analytics")
 }
