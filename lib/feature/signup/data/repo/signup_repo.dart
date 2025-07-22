@@ -2,9 +2,9 @@ import 'package:drippydrop_app/feature/signup/data/models/singnup_models.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignupRepository {
-  Future<dynamic> signup(SignupRequestModel model) async {
-    final supabase = Supabase.instance.client;
+  final supabase = Supabase.instance.client;
 
+  Future<dynamic> signup(SignupRequestModel model) async {
     try {
       final response = await supabase.auth.signUp(
         email: model.email,
@@ -50,6 +50,31 @@ class SignupRepository {
     } catch (e) {
       return SignupErrorModel(
         message: 'Unexpected error during signup: ${e.toString()}',
+      );
+    }
+  }
+
+  //--------------------------------------gender and age------------------------------------------------------//
+
+  Future<void> updateGenderAndAgeRange({
+    required String gender,
+    required String ageRange,
+  }) async {
+    final userId = supabase.auth.currentUser?.id;
+    if (userId == null) {
+      throw Exception("User not logged in");
+    }
+
+    try {
+      await supabase
+          .from('user_profiles')
+          .update({'gender': gender, 'age_range': ageRange})
+          .eq('id', userId);
+    } on PostgrestException catch (e) {
+      throw Exception("Supabase Error: ${e.message} - ${e.details}");
+    } on Exception catch (e) {
+      throw Exception(
+        "An unexpected error occurred during profile update: ${e.toString()}",
       );
     }
   }

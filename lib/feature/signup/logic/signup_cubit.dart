@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:drippydrop_app/core/helper/token_functions.dart';
 import 'package:drippydrop_app/feature/signup/data/repo/signup_repo.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,6 +13,8 @@ class SignupCubit extends Cubit<SignupState> {
 
   SignupCubit(this.signupRepository) : super(SignupInitial());
 
+  //------------------------------------sign up-------------------------------------------------//
+
   Future<void> signupUser({
     required String firstName,
     required String lastName,
@@ -21,7 +22,6 @@ class SignupCubit extends Cubit<SignupState> {
     required String phone,
     required String password,
   }) async {
-
     emit(SignupLoading());
 
     String? errorMessage;
@@ -54,9 +54,6 @@ class SignupCubit extends Cubit<SignupState> {
       final result = await signupRepository.signup(request);
 
       if (result is SignupSuccessModel) {
-        saveAuthToken(result.accessToken);
-        saveRefreshToken(result.refreshToken);
-
         emit(SignupSuccess());
       } else if (result is SignupErrorModel) {
         emit(SignupFailure(error: result.message ?? 'Signup failed'));
@@ -67,6 +64,43 @@ class SignupCubit extends Cubit<SignupState> {
       emit(SignupFailure(error: e.message));
     } catch (e) {
       emit(SignupFailure(error: 'Unexpected error: ${e.toString()}'));
+    }
+  }
+
+  //-------------------------------------age and gender------------------------------------------------//
+  // Age With Gender Selection
+  Future<void> updateGenderAndAge(String gender, String ageRange) async {
+    emit(GenderAgeLoading());
+
+    try {
+      await signupRepository.updateGenderAndAgeRange(
+        gender: gender,
+        ageRange: ageRange,
+      );
+      emit(GenderAgeSuccess());
+    } on Exception catch (e) {
+      final errorMessage = e.toString().replaceFirst('Exception: ', '');
+
+      if (errorMessage.contains("User not logged in")) {
+        emit(
+          GenderAgeError(
+            error: "You must be logged in to update your profile.",
+          ),
+        );
+      } else if (errorMessage.contains("Supabase Error:")) {
+        emit(GenderAgeError(error: "Failed to update profile: $errorMessage"));
+      } else {
+        emit(
+          GenderAgeError(
+            error:
+                "An unexpected error occurred. Please try again. ($errorMessage)",
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        GenderAgeError(error: "An unknown error occurred. Please try again."),
+      );
     }
   }
 }

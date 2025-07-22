@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:drippydrop_app/core/helper/token_functions.dart';
 import 'package:drippydrop_app/feature/login/data/models/login_models.dart';
 import 'package:drippydrop_app/feature/login/data/repo/login_repo.dart';
 import 'package:meta/meta.dart';
@@ -20,8 +19,7 @@ class LoginCubit extends Cubit<LoginState> {
       final response = await _loginRepository.login(email, password);
 
       if (response is LoginResponseModel) {
-        await saveAuthToken(response.accessToken);
-        await saveRefreshToken(response.refreshToken);
+
         emit(LoginSuccess(response));
       } else if (response is LoginErrorModel) {
         emit(LoginError(response.msg ?? 'Login failed. Please try again.'));
@@ -39,7 +37,6 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> logoutUser() async {
     emit(LoginLoading());
     try {
-      await clearAuthTokens();
       emit(LoginInitial());
     } catch (e) {
       emit(LoginError('Failed to logout. Please try again.'));

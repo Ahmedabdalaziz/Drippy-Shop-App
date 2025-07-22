@@ -4,7 +4,6 @@ import 'package:drippydrop_app/core/helper/functions.dart' show Validators;
 import 'package:drippydrop_app/core/helper/spacing.dart';
 import 'package:drippydrop_app/core/routing/routs.dart';
 import 'package:drippydrop_app/feature/login/logic/login_cubit.dart';
-import 'package:drippydrop_app/feature/login/ui/widgets/google_signup.dart';
 import 'package:drippydrop_app/feature/login/ui/widgets/social_signIn_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    print("===== Login Screen Loaded =====");
     super.dispose();
   }
 
@@ -182,27 +182,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: FontAwesomeIcons.google,
                         text: 'Continue With Google',
                         onPressed: () {
-                          GoogleAuthService()
-                              .signInWithGoogle()
-                              .then((user) {
-                                if (user != null) {
-                                  FocusScope.of(context).unfocus();
-                                  context.pushNamedAndRemoveUntil(Routing.home);
-                                } else {
-                                  context.showAppSnackBar(
-                                    'Google Sign-in Failed.',
-                                    isError: true,
-                                    icon: FontAwesomeIcons.circleExclamation,
-                                  );
-                                }
-                              })
-                              .catchError((error) {
-                                context.showAppSnackBar(
-                                  'An Error Occurred, Try Again Later',
-                                  isError: true,
-                                  icon: FontAwesomeIcons.circleExclamation,
-                                );
-                              });
+                          context.showAppSnackBar(
+                            "This Feature Will be Available Soon",
+                            backgroundColor: AppColors.yellow,
+                            icon: FontAwesomeIcons.personWalkingWithCane,
+                          );
+                          // GoogleAuthService()
+                          //     .signInWithGoogle()
+                          //     .then((user) {
+                          //       if (user != null) {
+                          //         FocusScope.of(context).unfocus();
+                          //         context.pushNamedAndRemoveUntil(Routing.home);
+                          //       } else {
+                          //         context.showAppSnackBar(
+                          //           'Google Sign-in Failed.',
+                          //           isError: true,
+                          //           icon: FontAwesomeIcons.circleExclamation,
+                          //         );
+                          //       }
+                          //     })
+                          //     .catchError((error) {
+                          //       context.showAppSnackBar(
+                          //         'An Error Occurred, Try Again Later',
+                          //         isError: true,
+                          //         icon: FontAwesomeIcons.circleExclamation,
+                          //       );
+                          //     });
                         },
                       ),
                       verticalSpace(18),

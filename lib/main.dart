@@ -20,7 +20,9 @@ Future<void> main() async {
     anonKey: Constants.supabaseKey,
   );
 
-  await Firebase.initializeApp();
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp();
+  }
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

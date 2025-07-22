@@ -7,6 +7,7 @@ class AppColors {
   static const Color textLight = Color(0xFF000000);
   static const Color hintLight = Color(0xFFA2A2A2);
 
+
   static const Color backgroundDark = Color(0xFF110C1F);
   static const Color second = Color(0xFF342F3F);
   static const Color textDark = Color(0xFFFFFFFF);

@@ -30,7 +30,7 @@ Future<GetIt> setUpGetIt() async {
   getIt.registerLazySingleton<SignupRepository>(() => SignupRepository());
 
   // Register SignupCubit
-  getIt.registerFactory<SignupCubit>(
+  getIt.registerLazySingleton<SignupCubit>(
     () => SignupCubit(getIt<SignupRepository>()),
   );
 

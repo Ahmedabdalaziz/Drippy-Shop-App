@@ -41,18 +41,21 @@ class _SignupScreenState extends State<SignupScreen> {
           );
         } else if (state is SignupSuccess) {
           context.showAppSnackBar(
+            isSuccess: true,
             "Account created successfully!",
             isError: false,
             icon: FontAwesomeIcons.circleCheck,
           );
-          context.pushNamedAndRemoveUntil(Routing.emailConfirm);
+          context.pushNamedAndRemoveUntil(Routing.ageAndGender);
         }
       },
       builder: (context, state) {
         if (state is SignupLoading) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: context.colorScheme.onPrimary,
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: context.colorScheme.primary,
+              ),
             ),
           );
         }
@@ -60,11 +63,10 @@ class _SignupScreenState extends State<SignupScreen> {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-            resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(
-                  top: statusBarHeight + 110.h,
+                  top: statusBarHeight + 40.h,
                   left: 23.w,
                   right: 23.w,
                   bottom: MediaQuery.of(context).viewInsets.bottom > 0
@@ -76,31 +78,51 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      IconButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        icon: Icon(
+                          Icons.keyboard_arrow_left,
+                          color: context.colorScheme.onSecondary,
+                          size: 26.sp,
+                        ),
+                        style: IconButton.styleFrom(
+                          backgroundColor: context
+                              .colorScheme
+                              .onPrimaryContainer
+                              .withOpacity(0.2),
+                          shape: const CircleBorder(),
+                        ),
+                      ),
+                      verticalSpace(22),
+
                       Text(
-                        "Sign up",
-                        style: context.textTheme.displayLarge?.copyWith(
+                        "Create Account",
+                        style: context.textTheme.bodyLarge?.copyWith(
                           fontSize: 32.sp,
                           color: context.textColor,
                         ),
                       ),
-                      verticalSpace(36),
+                      verticalSpace(26),
 
                       /// First Name
                       TextFormField(
                         decoration: const InputDecoration(
-                          hintText: 'Firstname',
+                          hintText: 'First Name',
                         ),
                         controller: firstName,
                         validator: (val) => val == null || val.isEmpty
                             ? "Please enter your first name"
                             : null,
                       ),
-
                       verticalSpace(18),
 
                       /// Last Name
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'Lastname'),
+                        decoration: const InputDecoration(
+                          hintText: 'Last Name',
+                        ),
                         controller: lastName,
                         validator: (val) => val == null || val.isEmpty
                             ? 'Please enter your last name'

@@ -16,20 +16,21 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    print("===== Splash Screen Loaded =====");
     checkAndNavigate();
   }
 
   void checkAndNavigate() async {
     final isLoggedIn = await checkAndRefreshSession();
-    if (isLoggedIn) {
-      Future.delayed(Duration(seconds: 3), () {
-        context.pushNamedAndRemoveUntil(Routing.home);
-      });
-    } else {
-      Future.delayed(Duration(seconds: 3), () {
-        context.pushNamedAndRemoveUntil(Routing.login);
-      });
-    }
+
+    if (!mounted) return;
+
+    Future.delayed(Duration(seconds: 3), () {
+      if (!mounted) return;
+      context.pushNamedAndRemoveUntil(
+        isLoggedIn ? Routing.home : Routing.login,
+      );
+    });
   }
 
   @override

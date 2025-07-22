@@ -27,3 +27,13 @@ final class SignupValidationError extends SignupState {
 
   SignupValidationError(this.field, this.message);
 }
+
+final class GenderAgeSuccess extends SignupState {}
+
+final class GenderAgeLoading extends SignupState {}
+
+final class GenderAgeError extends SignupState {
+  final String error;
+
+  GenderAgeError({required this.error});
+}
