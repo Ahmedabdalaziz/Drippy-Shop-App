@@ -1,29 +1,28 @@
+import 'package:dio/dio.dart';
 import 'package:drippydrop_app/feature/login/data/models/login_models.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../core/networking/api_service.dart';
 
 class LoginRepository {
-  LoginRepository();
+  final ApiService apiService;
+
+  LoginRepository(this.apiService);
 
   Future<dynamic> login(String email, String password) async {
     try {
-      final response = await Supabase.instance.client.auth.signInWithPassword(
-        email: email,
-        password: password,
+      final response = await apiService.login(
+        LoginRequestModel(email: email, password: password),
       );
-
-      final user = response.user;
-      if (user != null) {
-        return LoginResponseModel(
-          accessToken: response.session?.accessToken ?? '',
-          refreshToken: response.session?.refreshToken ?? '',
-        );
-      } else {
-        return LoginErrorModel(msg: 'Login failed: User is null');
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        return LoginErrorModel.fromJson(e.response!.data);
       }
-    } on AuthException catch (e) {
-      return LoginErrorModel(msg: e.message);
-    } catch (e) {
-      return LoginErrorModel(msg: 'Unexpected error: $e');
+      else {
+        return LoginErrorModel(
+          status: 'error',
+          message: 'An unexpected error occurred',
+        );
+      }
     }
   }
 }

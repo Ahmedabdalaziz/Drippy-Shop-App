@@ -44,11 +44,11 @@ class _LoginScreenState extends State<LoginScreen> {
             'Logging in...',
             backgroundColor: context.colorScheme.primary,
             icon: FontAwesomeIcons.infoCircle,
-            duration: const Duration(milliseconds: 500),
+            duration: const Duration(seconds: 2),
           );
         } else if (state is LoginSuccess) {
           FocusScope.of(context).unfocus();
-          context.pushNamed(Routing.home);
+          context.pushNamed(Routing.navigator);
         } else if (state is LoginError) {
           context.showAppSnackBar(
             state.error,
@@ -128,6 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       verticalSpace(18),
                       ElevatedButton(
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           if (_formKey.currentState!.validate()) {
                             context.read<LoginCubit>().loginUser(
                               _emailController.text.trim(),
@@ -187,27 +188,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             backgroundColor: AppColors.yellow,
                             icon: FontAwesomeIcons.personWalkingWithCane,
                           );
-                          // GoogleAuthService()
-                          //     .signInWithGoogle()
-                          //     .then((user) {
-                          //       if (user != null) {
-                          //         FocusScope.of(context).unfocus();
-                          //         context.pushNamedAndRemoveUntil(Routing.home);
-                          //       } else {
-                          //         context.showAppSnackBar(
-                          //           'Google Sign-in Failed.',
-                          //           isError: true,
-                          //           icon: FontAwesomeIcons.circleExclamation,
-                          //         );
-                          //       }
-                          //     })
-                          //     .catchError((error) {
-                          //       context.showAppSnackBar(
-                          //         'An Error Occurred, Try Again Later',
-                          //         isError: true,
-                          //         icon: FontAwesomeIcons.circleExclamation,
-                          //       );
-                          //     });
                         },
                       ),
                       verticalSpace(18),

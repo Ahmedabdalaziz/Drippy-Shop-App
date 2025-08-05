@@ -17,19 +17,14 @@ class LoginRequestModel {
 
 @JsonSerializable()
 class LoginResponseModel {
-  @JsonKey(name: 'access_token')
-  final String accessToken;
-
-  @JsonKey(name: 'refresh_token')
-  final String refreshToken;
-
-  @JsonKey(name: 'expires_in')
-  final int? expiresIn;
+  final String message;
+  final String token;
+  final String status;
 
   LoginResponseModel({
-    required this.accessToken,
-    required this.refreshToken,
-    this.expiresIn,
+    required this.message,
+    required this.token,
+    required this.status,
   });
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
@@ -40,9 +35,10 @@ class LoginResponseModel {
 
 @JsonSerializable()
 class LoginErrorModel {
-  final String msg;
+  final String status;
+  final String message;
 
-  LoginErrorModel({required this.msg});
+  LoginErrorModel({required this.status, required this.message});
 
   factory LoginErrorModel.fromJson(Map<String, dynamic> json) =>
       _$LoginErrorModelFromJson(json);

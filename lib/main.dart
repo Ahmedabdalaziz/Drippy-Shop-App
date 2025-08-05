@@ -9,12 +9,22 @@ import 'package:flutter/services.dart'
 import 'package:supabase_flutter/supabase_flutter.dart' show Supabase;
 
 import 'core/routing/app_routing.dart' show AppRouter;
+import 'feature/error_screen/error_widget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await setUpGetIt();
 
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return MaterialApp(
+      home: Scaffold(
+        body: CustomErrorScreen(
+          message: details.exceptionAsString(),
+        ),
+      ),
+    );
+  };
   await Supabase.initialize(
     url: Constants.supabaseUrl,
     anonKey: Constants.supabaseKey,

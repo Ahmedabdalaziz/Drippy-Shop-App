@@ -21,13 +21,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {
         _scale = 1.0;
       });
     });
 
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         active = true;
       });
@@ -41,11 +41,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         child: Center(
           child: AnimatedScale(
             scale: _scale,
-            duration: Duration(milliseconds: 800),
+            duration: const Duration(milliseconds: 800),
             curve: Curves.easeOutBack,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
+                verticalSpace(120.h),
                 SvgPicture.asset(
                   "assets/welcome/welcome.svg",
                   height: 300.h,
@@ -57,19 +57,19 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   style: context.textTheme.titleLarge?.copyWith(fontSize: 32.h),
                   textAlign: TextAlign.center,
                 ),
-                verticalSpace(24.h),
+                verticalSpace(180.h),
                 SizedBox(
-                  height: 100.h,
+                  height: 90.h,
                   child: AnimatedOpacity(
                     opacity: active ? 1.0 : 0.0,
-                    duration: Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
                     curve: Curves.easeInOut,
                     child: Padding(
                       padding: 16.0.all,
                       child: ElevatedButton(
                         onPressed: active
                             ? () {
-                                context.pushNamedAndRemoveUntil(Routing.home);
+                                context.pushNamedAndRemoveUntil(Routing.navigator);
                               }
                             : null,
                         child: Text(

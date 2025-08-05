@@ -8,4 +8,5 @@ class Routing {
   static const String settings = '/settings';
   static const String about = '/about';
   static const String ageAndGender = '/ageAndGender';
+  static const String navigator = '/navigator';
 }

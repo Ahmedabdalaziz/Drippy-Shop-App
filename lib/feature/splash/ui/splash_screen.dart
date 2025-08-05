@@ -1,9 +1,8 @@
 import 'package:drippydrop_app/core/helper/color.dart';
 import 'package:drippydrop_app/core/helper/extensions.dart';
+import 'package:drippydrop_app/core/helper/token.dart';
 import 'package:drippydrop_app/core/routing/routs.dart';
 import 'package:flutter/material.dart';
-
-import '../logic/check_and_refresh_session.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,15 +20,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkAndNavigate() async {
-    final isLoggedIn = await checkAndRefreshSession();
-
-    if (!mounted) return;
-
-    Future.delayed(Duration(seconds: 3), () {
+    final token = await TokenManager().getToken();
+    Future.delayed(const Duration(seconds: 4), () {
       if (!mounted) return;
-      context.pushNamedAndRemoveUntil(
-        isLoggedIn ? Routing.home : Routing.login,
-      );
+
+      if (token != null && token.isNotEmpty) {
+        context.pushNamedAndRemoveUntil(Routing.signup);
+      } else {
+        context.pushNamedAndRemoveUntil(Routing.login);
+      }
     });
   }
 

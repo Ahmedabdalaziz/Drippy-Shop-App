@@ -17,20 +17,23 @@ Map<String, dynamic> _$LoginRequestModelToJson(LoginRequestModel instance) =>
 
 LoginResponseModel _$LoginResponseModelFromJson(Map<String, dynamic> json) =>
     LoginResponseModel(
-      accessToken: json['access_token'] as String,
-      refreshToken: json['refresh_token'] as String,
-      expiresIn: (json['expires_in'] as num?)?.toInt(),
+      message: json['message'] as String,
+      token: json['token'] as String,
+      status: json['status'] as String,
     );
 
 Map<String, dynamic> _$LoginResponseModelToJson(LoginResponseModel instance) =>
     <String, dynamic>{
-      'access_token': instance.accessToken,
-      'refresh_token': instance.refreshToken,
-      'expires_in': instance.expiresIn,
+      'message': instance.message,
+      'token': instance.token,
+      'status': instance.status,
     };
 
 LoginErrorModel _$LoginErrorModelFromJson(Map<String, dynamic> json) =>
-    LoginErrorModel(msg: json['msg'] as String);
+    LoginErrorModel(
+      status: json['status'] as String,
+      message: json['message'] as String,
+    );
 
 Map<String, dynamic> _$LoginErrorModelToJson(LoginErrorModel instance) =>
-    <String, dynamic>{'msg': instance.msg};
+    <String, dynamic>{'status': instance.status, 'message': instance.message};

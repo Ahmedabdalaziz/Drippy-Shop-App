@@ -18,8 +18,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final TextEditingController firstName = TextEditingController();
-  final TextEditingController lastName = TextEditingController();
+  final TextEditingController name = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -41,8 +40,8 @@ class _SignupScreenState extends State<SignupScreen> {
           );
         } else if (state is SignupSuccess) {
           context.showAppSnackBar(
+            'Account created successfully!',
             isSuccess: true,
-            "Account created successfully!",
             isError: false,
             icon: FontAwesomeIcons.circleCheck,
           );
@@ -50,156 +49,140 @@ class _SignupScreenState extends State<SignupScreen> {
         }
       },
       builder: (context, state) {
-        if (state is SignupLoading) {
-          return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                color: context.colorScheme.primary,
-              ),
-            ),
-          );
-        }
-
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Scaffold(
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: statusBarHeight + 40.h,
-                  left: 23.w,
-                  right: 23.w,
-                  bottom: MediaQuery.of(context).viewInsets.bottom > 0
-                      ? MediaQuery.of(context).viewInsets.bottom + 20.h
-                      : 0.h,
-                ),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          context.pop();
-                        },
-                        icon: Icon(
-                          Icons.keyboard_arrow_left,
-                          color: context.colorScheme.onSecondary,
-                          size: 26.sp,
-                        ),
-                        style: IconButton.styleFrom(
-                          backgroundColor: context
-                              .colorScheme
-                              .onPrimaryContainer
-                              .withOpacity(0.2),
-                          shape: const CircleBorder(),
-                        ),
-                      ),
-                      verticalSpace(22),
-
-                      Text(
-                        "Create Account",
-                        style: context.textTheme.bodyLarge?.copyWith(
-                          fontSize: 32.sp,
-                          color: context.textColor,
-                        ),
-                      ),
-                      verticalSpace(26),
-
-                      /// First Name
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'First Name',
-                        ),
-                        controller: firstName,
-                        validator: (val) => val == null || val.isEmpty
-                            ? "Please enter your first name"
-                            : null,
-                      ),
-                      verticalSpace(18),
-
-                      /// Last Name
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'Last Name',
-                        ),
-                        controller: lastName,
-                        validator: (val) => val == null || val.isEmpty
-                            ? 'Please enter your last name'
-                            : null,
-                      ),
-                      verticalSpace(18),
-
-                      /// Email
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'Email Address',
-                        ),
-                        controller: emailController,
-                        validator: Validators.validateEmail,
-                      ),
-                      verticalSpace(18),
-
-                      /// Phone
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'Phone Number',
-                        ),
-                        controller: phoneController,
-                        keyboardType: TextInputType.phone,
-                        validator: Validators.validatePhone,
-                      ),
-                      verticalSpace(18),
-
-                      /// Password
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                obscurePassword = !obscurePassword;
-                              });
-                            },
-                            child: Icon(
-                              obscurePassword
-                                  ? FontAwesomeIcons.eyeSlash
-                                  : FontAwesomeIcons.eye,
+          child: Stack(
+            children: [
+              Scaffold(
+                body: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: statusBarHeight + 40.h,
+                      left: 23.w,
+                      right: 23.w,
+                      bottom: MediaQuery.of(context).viewInsets.bottom > 0
+                          ? MediaQuery.of(context).viewInsets.bottom + 20.h
+                          : 0.h,
+                    ),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            onPressed: () => context.pop(),
+                            icon: Icon(
+                              Icons.keyboard_arrow_left,
+                              color: context.colorScheme.onSecondary,
+                              size: 26.sp,
+                            ),
+                            style: IconButton.styleFrom(
+                              backgroundColor: context
+                                  .colorScheme
+                                  .onPrimaryContainer
+                                  .withOpacity(0.2),
+                              shape: const CircleBorder(),
+                            ),
+                          ),
+                          verticalSpace(22),
+                          Text(
+                            'Create Account',
+                            style: context.textTheme.bodyLarge?.copyWith(
+                              fontSize: 32.sp,
                               color: context.textColor,
                             ),
                           ),
-                        ),
-                        obscureText: obscurePassword,
-                        controller: passwordController,
-                        validator: Validators.validatePassword,
-                      ),
-                      verticalSpace(58),
+                          verticalSpace(26),
 
-                      ElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            context.read<SignupCubit>().signupUser(
-                              firstName: firstName.text,
-                              lastName: lastName.text,
-                              email: emailController.text,
-                              phone: phoneController.text,
-                              password: passwordController.text.trim(),
-                            );
-                          } else {
-                            context.showAppSnackBar(
-                              'Please review the data entered.',
-                              isError: true,
-                              icon: FontAwesomeIcons.circleExclamation,
-                            );
-                          }
-                        },
-                        child: const Text("Continue"),
+                          /// Name
+                          TextFormField(
+                            decoration: const InputDecoration(hintText: 'Name'),
+                            controller: name,
+                            validator: (val) => val == null || val.isEmpty
+                                ? 'Please enter your name'
+                                : null,
+                          ),
+                          verticalSpace(18),
+
+                          /// Email
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: 'Email Address',
+                            ),
+                            controller: emailController,
+                            validator: Validators.validateEmail,
+                          ),
+                          verticalSpace(18),
+
+                          /// Phone
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: 'Phone Number',
+                            ),
+                            controller: phoneController,
+                            keyboardType: TextInputType.phone,
+                            validator: Validators.validatePhone,
+                          ),
+                          verticalSpace(18),
+
+                          /// Password
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Password',
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    obscurePassword = !obscurePassword;
+                                  });
+                                },
+                                child: Icon(
+                                  obscurePassword
+                                      ? FontAwesomeIcons.eyeSlash
+                                      : FontAwesomeIcons.eye,
+                                  color: context.textColor,
+                                ),
+                              ),
+                            ),
+                            obscureText: obscurePassword,
+                            controller: passwordController,
+                            validator: Validators.validatePassword,
+                          ),
+                          verticalSpace(58),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                context.read<SignupCubit>().signupUser(
+                                  name: name.text,
+                                  email: emailController.text,
+                                  password: passwordController.text.trim(),
+                                );
+                              } else {
+                                context.showAppSnackBar(
+                                  'Please review the data entered.',
+                                  isError: true,
+                                  icon: FontAwesomeIcons.circleExclamation,
+                                );
+                              }
+                            },
+                            child: const Text('Continue'),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
+              if (state is SignupLoading)
+                Container(
+                  color: context.colorScheme.onSecondary.withOpacity(0.4),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: context.colorScheme.primary,
+                    ),
+                  ),
+                ),
+            ],
           ),
         );
       },

@@ -1,5 +1,5 @@
 import 'package:drippydrop_app/core/routing/routs.dart';
-import 'package:drippydrop_app/feature/home/ui/screens/home_screen.dart';
+import 'package:drippydrop_app/feature/error_screen/error_screen.dart';
 import 'package:drippydrop_app/feature/login/logic/login_cubit.dart';
 import 'package:drippydrop_app/feature/login/ui/screens/login_screen.dart';
 import 'package:drippydrop_app/feature/signup/ui/screens/age_and_gender_screen.dart';
@@ -8,7 +8,7 @@ import 'package:drippydrop_app/feature/welcome/ui/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-
+import '../../feature/home/ui/widgets/navigation.dart';
 import '../../feature/signup/logic/signup_cubit.dart';
 import '../../feature/splash/ui/splash_screen.dart';
 
@@ -20,7 +20,7 @@ class AppRouter {
 
     switch (settings.name) {
       case Routing.splash:
-        return createRoute(SplashScreen());
+        return createRoute(const SplashScreen());
 
       case Routing.login:
         return createRoute(
@@ -38,7 +38,7 @@ class AppRouter {
           ),
         );
       case Routing.welcomeScreen:
-        return createRoute(WelcomeScreen());
+        return createRoute(const WelcomeScreen());
 
       case Routing.ageAndGender:
         return createRoute(
@@ -48,11 +48,11 @@ class AppRouter {
           ),
         );
 
-      case Routing.home:
-        return createRoute(HomeScreen());
+      case Routing.navigator:
+        return createRoute(const Navigation());
 
       default:
-        return createRoute(Container());
+        return createRoute(const ErrorScreen());
     }
   }
 }

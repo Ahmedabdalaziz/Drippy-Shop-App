@@ -19,7 +19,9 @@ Future<GetIt> setUpGetIt() async {
   /////////////////////////////////////////////////////////////////////
 
   //Register LoginRepository
-  getIt.registerLazySingleton<LoginRepository>(() => LoginRepository());
+  getIt.registerLazySingleton<LoginRepository>(
+    () => LoginRepository(getIt<ApiService>()),
+  );
 
   //Register LoginCubit
   getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt<LoginRepository>()));
@@ -27,7 +29,9 @@ Future<GetIt> setUpGetIt() async {
   /////////////////////////////////////////////////////////////////////
 
   // Register SignupRepository
-  getIt.registerLazySingleton<SignupRepository>(() => SignupRepository());
+  getIt.registerLazySingleton<SignupRepository>(
+    () => SignupRepository(getIt<ApiService>()),
+  );
 
   // Register SignupCubit
   getIt.registerLazySingleton<SignupCubit>(

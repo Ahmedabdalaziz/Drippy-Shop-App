@@ -12,7 +12,7 @@ final ThemeData lightTheme = ThemeData(
   colorScheme: const ColorScheme(
     brightness: Brightness.light,
     primary: AppColors.primary,
-    onPrimary: Colors.white,
+    onPrimary: AppColors.backgroundLight,
     secondary: AppColors.surfaceLight,
     onSecondary: AppColors.textLight,
     background: AppColors.backgroundLight,
@@ -102,15 +102,15 @@ final ThemeData darkTheme = ThemeData(
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-      borderSide: BorderSide(color: AppColors.primary, width: 1.0),
+      borderSide: const BorderSide(color: AppColors.primary, width: 1.0),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-      borderSide: BorderSide(color: Colors.redAccent, width: 1.0),
+      borderSide: const BorderSide(color: Colors.redAccent, width: 1.0),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-      borderSide: BorderSide(color: Colors.redAccent, width: 1.0),
+      borderSide: const BorderSide(color: Colors.redAccent, width: 1.0),
     ),
     labelStyle: AppTypography.darkTextTheme.bodyMedium,
     hintStyle: AppTypography.darkTextTheme.labelLarge?.copyWith(

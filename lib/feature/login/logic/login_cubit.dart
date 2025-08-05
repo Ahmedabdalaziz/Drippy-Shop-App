@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:drippydrop_app/core/helper/token.dart';
 import 'package:drippydrop_app/feature/login/data/models/login_models.dart';
 import 'package:drippydrop_app/feature/login/data/repo/login_repo.dart';
 import 'package:meta/meta.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'login_state.dart';
 
@@ -11,7 +11,6 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit(this._loginRepository) : super(LoginInitial());
 
-  // login user
   Future<void> loginUser(String email, String password) async {
     emit(LoginLoading());
 
@@ -19,27 +18,15 @@ class LoginCubit extends Cubit<LoginState> {
       final response = await _loginRepository.login(email, password);
 
       if (response is LoginResponseModel) {
-
         emit(LoginSuccess(response));
+        await TokenManager().saveToken(response.token);
       } else if (response is LoginErrorModel) {
-        emit(LoginError(response.msg ?? 'Login failed. Please try again.'));
+        emit(LoginError(response.message));
       } else {
         emit(LoginError('Unexpected error occurred during login.'));
       }
-    } on AuthException catch (e) {
-      emit(LoginError(e.message));
     } catch (e) {
-      emit(LoginError('Unexpected error: $e'));
-    }
-  }
-
-  // logout user
-  Future<void> logoutUser() async {
-    emit(LoginLoading());
-    try {
-      emit(LoginInitial());
-    } catch (e) {
-      emit(LoginError('Failed to logout. Please try again.'));
+      emit(LoginError('Unexpected error'));
     }
   }
 }
